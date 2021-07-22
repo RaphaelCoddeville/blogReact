@@ -3,28 +3,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 
-const images = fetch("https://picsum.photos/v2/list");
-
-function Articles () {
-
-    fetch("https://picsum.photos/v2/list")
-    .then(res => res.json())
-    
-
-    
-    const numbers = [1, 2, 3, 4, 5];
-    
-    const articleContent = numbers.map((number) =>
-    <div key={number} className="grid-item grid-item--width2 grid-item--height4">
-        
-    <img className="grid-img" src="https://picsum.photos/1200/1300?random={number}"></img>
-            <h4>Titre de l'article { number }</h4>
-    </div>
-    )
-
-    return <div>{articleContent}</div>
-};
-
 
 class Content extends React.Component {
 
@@ -39,7 +17,7 @@ class Content extends React.Component {
 
 
     componentDidMount() {
-        fetch("https://picsum.photos/v2/list")
+        fetch("https://picsum.photos/v2/list?limit=10")
           .then(res => res.json())
           .then((picsum) => this.setState({isLoaded : true, images : picsum}),
           (error) => {
@@ -51,7 +29,18 @@ class Content extends React.Component {
         )
       }
 
-      
+    randomMason () {
+
+      const height = ["grid-item--height2", "grid-item--height3", "grid-item--height4"];
+      const width = ["grid-item--width2", "grid-item--width3"];
+
+      const random ="grid-item " + height[Math.floor(Math.random() * height.length)] +" "+ width[Math.floor(Math.random() * width.length)];
+
+      return random;
+    }  
+
+    
+
 
     render() {
 
@@ -69,7 +58,8 @@ class Content extends React.Component {
                         <div className="grid-sizer"></div>
 
                         {this.state.images.map(picsum => 
-                               <div key={picsum.id} className="grid-item grid-item--width2 grid-item--height4">
+                               <div key={picsum.id} className={this.randomMason()}>
+                                 
                              <img className="grid-img" src={picsum.download_url}></img>
                                     <h4>Titre de l'article { picsum.author }</h4>
                             </div>
